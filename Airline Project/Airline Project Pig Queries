@@ -1,0 +1,739 @@
+airport = load '/home/edureka/Desktop/workspacedata/airline/airport.txt' using PigStorage (',') as (id:int,name:chararray,city:chararray,country:chararray,iatafaa:chararray,icao:chararray,lat:double,lon:double,alt:double,timezone:double,dst:chararray,tz:chararray);
+
+airport: {id: int,name: chararray,city: chararray,country: chararray,iatafaa: chararray,icao: chararray,lat: double,lon: double,alt: double,timezone: double,dst: chararray,tz: chararray}
+
+airline = load '/home/edureka/Desktop/workspacedata/airline/airline.txt' using PigStorage (',') as (id:int,name:chararray,alias:chararray,iata:chararray,icao:chararray,callsign:chararray,country:chararray,active:chararray);
+
+airline: {id: int,name: chararray,alias: chararray,iata: chararray,icao: chararray,callsign: chararray,country: chararray,active: chararray}
+
+route = load '/home/edureka/Desktop/workspacedata/airline/route.txt' using PigStorage (',') as (iataicao:chararray,id:int,source:chararray,sourceId:int,destination:chararray,destinationId:int,codeShare:chararray,stops:int,equipment:chararray);
+
+route: {iataicao: chararray,id: int,source: chararray,sourceId: int,destination: chararray,destinationId: int,codeShare: chararray,stops: int,equipment: chararray}
+
+For problem: A. Find list of Airports operating in the Country India
+
+grunt> a1 = filter airport by country == 'India';
+grunt> a2 = group a1 all;
+//grunt> a3 = foreach a2 generate a1.name;
+grunt> a3 = foreach a2 generate flatten(a1.name) as airportName;
+grunt> a4 = order a3 by $0;
+
+dump a4;
+(Agartala)
+(Agatti)
+(Agra)
+(Agra Cantonment Railway Station)
+(Ahmedabad)
+(Aizawl)
+(Akola)
+(Allahabad)
+(Along)
+(Amritsar)
+(Aurangabad)
+(Bagdogra)
+(Bakshi Ka Talab)
+(Bangalore)
+(Bareilly)
+(Belgaum)
+(Bellary)
+(Bhatinda)
+(Bhavnagar)
+(Bhiwani)
+(Bhopal)
+(Bhubaneshwar)
+(Bhuj)
+(Bidar)
+(Bilaspur)
+(Birsa Munda)
+(Bokaro)
+(Calicut)
+(Carnicobar)
+(Chandigarh)
+(Chennai Intl)
+(Chhatrapati Shivaji Intl)
+(Cochin)
+(Cochin Port)
+(Coimbatore)
+(Cooch Behar)
+(Cuddapah)
+(Daman)
+(Deesa)
+(Dehradun)
+(Devi Ahilyabai Holkar)
+(Dhanbad)
+(Dibrugarh)
+(Dibrugarh Airport)
+(Dimapur Airport)
+(Diu Airport)
+(Dr Ambedkar Intl)
+(Dundigul)
+(Fursatganj)
+(Gangtok Helipad)
+(Gaya)
+(Goa)
+(Gorakhpur Airport)
+(Guna)
+(Gwalior)
+(Havelock Island Seaport)
+(Helipad of Viraj Group)
+(Hirakud)
+(Hissar)
+(Hubli Airport)
+(Hyderabad)
+(Imphal)
+(Indira Gandhi Intl)
+(Jabalpur)
+(Jaipur)
+(Jaisalmer)
+(Jammu)
+(Jamnagar)
+(Jamshedpur)
+(Jhansi)
+(Jharsuguda)
+(Jodhpur)
+(Jorhat)
+(Kailashahar)
+(Kandla)
+(Kangra Airport)
+(Kanpur)
+(Kanpur Chakeri)
+(Keshod)
+(Khajuraho)
+(Kolhapur)
+(Kota)
+(Kullu Manali)
+(Latur Airport)
+(Leh)
+(Lilabari)
+(Lokpriya Gopinath Bordoloi International Airport)
+(Lucknow)
+(Ludhiana)
+(Madurai)
+(Mangalore)
+(Mormugao-Goa Port)
+(Muzaffarpur)
+(Mysore Airport)
+(Nagarjuna Sagar)
+(Nagaur Airport)
+(Nal)
+(Nanded Airport)
+(Nasik Road)
+(Nawapara)
+(Netaji Subhash Chandra Bose Intl)
+(New Delhi Train Station)
+(Panagarh)
+(Pantnagar)
+(Pathankot)
+(Patiala)
+(Patna)
+(Pondicherry)
+(Porbandar)
+(Port Blair)
+(Pune)
+(Purnea)
+(Raipur)
+(Rajahmundry)
+(Rajkot)
+(Rourkela)
+(Safdarjung)
+(Salem)
+(Sarsawa)
+(Satna)
+(Shillong Airport)
+(Shimla Airport)
+(Sholapur)
+(Silchar)
+(Srinagar)
+(Surat)
+(Tambaram)
+(Tanjore)
+(Tezpur Airport)
+(Thiruvananthapuram Intl)
+(Tirupati)
+(Trichy)
+(Udaipur)
+(Utkela)
+(Vadodara)
+(Varanasi)
+(Vijayawada)
+(Vishakhapatnam)
+(Yelahanka AFB)
+(Zero)
+
+For problem: B. Find the list of Airlines having zero stops
+grunt> a1 = filter route by stops == 0;
+grunt> a2 = group a1 all;
+grunt> a3 = foreach a2 generate flatten (a1.id) as routeId;
+grunt> a4 = join airline by id, a3 by routeId;
+grunt> a5 = foreach a4 generate $1;
+grunt> a6 = distinct a5;
+grunt> a7 = order a6 by $0 asc;
+
+40-Mile Air
+ABSA - Aerolinhas Brasileiras
+ALAK
+Abaet
+Abu Dhabi Amiri Flight
+Adria Airways
+Aegean Airlines
+Aer Lingus
+Aereonautica militare
+Aero Condor Peru
+Aero Flight
+Aero Lanka
+Aero-Service
+AeroMéxico
+AeroWorld 
+Aerocondor
+Aeroflot Russian Airlines
+Aeroflot-Nord
+Aerolane
+Aeroline GmbH
+Aerolineas Argentinas
+Aerolineas Galapagos (Aerogal)
+Aeromar
+Aeroper
+Afriqiyah Airways
+Aigle Azur
+Air Algerie
+Air Antilles Express
+Air Arabia
+Air Arabia Egypt
+Air Arabia Maroc
+Air Armenia
+Air Astana
+Air Atlanta Icelandic
+Air Austral
+Air Bagan
+Air Baltic
+Air Bangladesh
+Air Berlin
+Air Bosna
+Air Botswana
+Air Bourbon
+Air Burkina
+Air Busan
+Air Caledonie International
+Air Canada
+Air Caraïbes
+Air China
+Air Choice One
+Air Dolomiti
+Air Europa
+Air Europe
+Air Florida
+Air Foyle
+Air France
+Air Greenland
+Air Iceland
+Air India Express
+Air India Limited
+Air Italy
+Air Koryo
+Air Macau
+Air Madagascar
+Air Malta
+Air Mandalay
+Air Mauritius
+Air Moldova
+Air Mozambique
+Air Namibia
+Air New Zealand
+Air Nippon
+Air Niugini
+Air North Charter - Canada
+Air One
+Air Pacific
+Air Philippines
+Air Rarotonga
+Air Sahara
+Air Saint Pierre
+Air Salone
+Air Senegal International
+Air Seychelles
+Air Sicilia
+Air Sinai
+Air Tahiti
+Air Tahiti Nui
+Air Tindi
+Air Transat
+Air Vanuatu
+Air Zimbabwe
+AirAsia
+AirAsia X
+AirTran Airways
+Airbus France
+Aircompany Yakutia
+Airlinair
+Airlines Of Tasmania
+Airlines PNG
+Airnorth
+AlMasria Universal Airlines
+Alaska Airlines
+Alaska Central Express
+Alaska Seaplane Service
+Albanian Airlines
+Alitalia
+All Nippon Airways
+Allegiant Air
+Alpi Eagles
+Alrosa Mirny Air Enterprise
+Amaszonas
+American Airlines
+Amerijet International
+Apache Air
+Ariana Afghan Airlines
+Arik Air
+Arik Niger
+Arkefly
+Arkia Israel Airlines
+Arrow Air
+Aserca Airlines
+Asia Wings
+Asian Wings Airways
+Asiana Airlines
+Askari Aviation
+Astair
+Astrakhan Airlines
+Astral Aviation
+Atlant-Soyuz Airlines
+Atlantic Airways
+Atlantis European Airways
+Atlasjet
+Aurigny Air Services
+Austrian Airlines
+Avianca - Aerovias Nacionales de Colombia
+Avient Aviation
+Azerbaijan Airlines
+Azul
+BQB Lineas Aereas
+BRA-Transportes Aereos
+BVI Airways
+Bahamasair
+Baikotovitchestrian Airlines 
+Bangkok Airways
+Bearskin Lake Air Service
+Belair Airlines
+Belavia Belarusian Airlines
+Benin Golf Air
+Bering Air
+Berjaya Air
+Big Sky Airlines
+Biman Bangladesh Airlines
+Binter Canarias
+Birmingham European
+Blue Panorama Airlines
+British Airways
+Brussels Airlines
+Bulgaria Air
+BusinessAir
+CAL Cargo Air Lines
+Camair-co
+Cambodia Angkor Air (K6)
+Cameroon Airlines
+Canadian National Airways
+Canadian North
+Cape Air
+Cargo Plus Aviation
+Cargoitalia
+Caribbean Airlines
+Carpatair
+Cathay Pacific
+Catovair
+Caucasus Airlines
+Cayman Airways
+Cebu Pacific
+Changan Airlines
+Chicago Express
+China Airlines
+China Eastern Airlines
+China SSS
+China Southern Airlines
+China United
+China United Airlines
+Chitaavia
+Ciel Canadien
+Cielos Airlines
+Citilink Indonesia
+City Connexion Airlines
+CityJet
+Comair
+Comores Airlines
+Compagnie Africaine d\\'Aviation
+Condor Flugdienst
+Conviasa
+Copa Airlines
+Corsairfly
+Corse-Mediterranee
+Cosmic Air
+Croatia Airlines
+Cubana de Aviación
+Cyprus Airways
+Cyprus Turkish Airlines
+Czech Airlines
+DAT Danish Air Transport
+Daallo Airlines
+Delta Air Lines
+Dennis Sky
+Dragonair
+Druk Air
+EVA Air
+Eagle Air
+East African
+Eastar Jet
+Eastern Airways
+Egyptair
+El Al Israel Airlines
+Emirates
+Empresa Ecuatoriana De Aviacion
+Era Alaska
+Estafeta Carga Aerea
+Estonian Air
+Ethiopian Airlines
+Etihad Airways
+Euro Exec Express
+Eurolot
+Eurowings
+Excel Airways
+Express One International
+Far Eastern Air Transport
+Finnair
+Firefly
+First Air
+Flightline
+Flightlink Tanzania
+Fly 6ix
+Fly Air
+Fly Colombia ( Interliging Flights )
+Fly Dubai
+Fly540
+FlyLal
+FlyNordic
+Flybaboo
+Flybe
+Formosa Airlines
+Frontier Airlines
+Fuji Dream Airlines
+Gabon Airlines
+Garuda Indonesia
+Gazpromavia
+Genesis
+Georgian Airways
+Georgian National Airlines
+Germania
+Germanwings
+Go Air
+Golden Air
+Great Lakes Airlines
+Grupo TACA
+Gulf Air Bahrain
+Hainan Airlines
+Hankook Airline
+Hapagfly
+Harmony Airways
+Hawaiian Airlines
+Hawkair
+Helijet
+Hello
+Helvetic Airways
+Hex'Air
+Hokkaido International Airlines
+Homer Air
+Hong Kong Airlines
+Hong Kong Express Airways
+Huaxia
+Iberia Airlines
+Iberworld
+Ibex Airlines
+Icelandair
+Illinois Airways
+IndiGo Airlines
+Indonesia AirAsia
+Insel Air (7I/INC) (Priv)
+Interair South Africa
+Interjet (ABC Aerolineas)
+Interlink Airlines
+Intersky
+Interstate Airline
+Iran Air
+Iran Aseman Airlines
+Island Air (WP)
+Isles of Scilly Skybus
+Israir
+IzAvia
+Japan Air System
+Japan Airlines
+Japan Asia Airways
+Japan Transocean Air
+Jat Airways
+Jazeera Airways
+Jeju Air
+Jet Airways
+Jet2.com
+JetBlue Airways
+Jetstar Airways
+Jetstar Asia Airways
+Jetstar Pacific
+Jin Air
+Juneyao Airlines
+KLM Royal Dutch Airlines
+KSY
+Kam Air
+Kampuchea Airlines
+Kenmore Air
+Kenya Airways
+Kish Air
+Korean Air
+Kuwait Airways
+L
+LACSA
+LAN Airlines
+LAN Argentina
+LOT Polish Airlines
+LSM Airlines
+LTU International
+Lao Airlines
+Leeward Islands Air Transport
+Libyan Arab Airlines
+Linhas A
+Lion Mentari Airlines
+Lufthansa
+Luxair
+MIAT Mongolian Airlines
+Maastricht Airlines
+Mahan Air
+Malaysia Airlines
+Maldivian
+Malindo Air
+Malmö Aviation
+Mandala Airlines
+Mandarin Airlines
+Mango
+Marusya Airways
+Marysya Airlines
+Mauritania Airlines International
+Maxair
+Maya Island Air
+Meridiana
+Metro Batavia
+MexicanaLink
+Middle East Airlines
+Midwest Airlines (Egypt)
+Mongolian International Air Lines 
+Montenegro Airlines
+Moskovia Airlines
+Motor Sich
+Myway Airlines
+NHT Lineas Aereas
+Nas Air
+Nasair
+Nationwide Airlines
+Nauru Air Corporation
+Nepal Airlines
+NextJet
+Niki
+Nile Air
+Nok Air
+NordStar Airlines
+Northern Dene Airways
+Northwestern Air
+Norwegian Air Shuttle
+Nouvel Air Tunisie
+Oceanair
+Olympic Airlines
+Oman Air
+Omni Air International
+Omskavia Airline
+Onur Air
+Orenburg Airlines
+Orient Thai Airlines
+Overland Airways
+PAN Air
+PB Air
+Pacific Coastal Airline
+Pacific East Asia Cargo Airlines
+Pacific Wings
+Pakistan International Airlines
+Pal airlines
+Papillon Grand Canyon Helicopters
+Patriot Airways
+Peach Aviation
+Pegasus Airlines
+Peninsula Airways
+Peruvian Airlines
+Philippine Airlines
+Piedmont Airlines (1948-1989)
+Pinnacle Airlines
+Polet Airlines (Priv)
+Porter Airlines
+Potomac Air
+Precision Air
+Primaris Airlines
+Proflight Commuter Services
+Qantas
+Qatar Airways
+Rainbow Air Polynesia
+Reem Air
+Regional Express
+Rossiya-Russian Airlines
+Royal Air Cambodge
+Royal Air Maroc
+Royal Brunei Airlines
+Royal Falcon
+Royal Jordanian
+Rwandair Express
+Ryanair
+S7 Airlines
+SATA Air Acores
+SATA International
+SATENA
+SENIC AIRLINES
+SOCHI AIR CHATER
+Safi Airlines
+Salmon Air
+Salzburg arrows
+Santa Barbara Airlines
+Saratov Aviation Division
+Sat Airlines
+Saudi Arabian Airlines
+Scandinavian Airlines System
+Scat Air
+Scoot
+SeaPort Airlines
+Seaborne Airlines
+Senegal Airlines
+Servicios de Transportes A
+Shaheen Air International
+Shandong Airlines
+Shanghai Airlines
+Sharp Airlines
+Shenzhen Airlines
+Shuttle America
+Sibaviatrans
+Sichuan Airlines
+SilkAir
+Singapore Airlines
+Sky Airline
+SkyWork Airlines 
+Skymark Airlines
+Skynet Airlines
+Skyservice Airlines
+SmartLynx Airlines
+Solomon Airlines
+South African Airways
+South East Asian Airlines
+Southern Winds Airlines
+Southwest Airlines
+Spicejet
+Spirit Airlines
+SriLankan Airlines
+Sriwijaya Air
+Star Flyer
+Star Peru (2I)
+Star1 Airlines
+Starbow Airlines
+Starline.kz
+Sudan Airways
+Sun Country Airlines
+SunExpress
+Surinam Airways
+Swiss International Air Lines
+T.J. Air
+TAAG Angola Airlines
+TACV
+TAM Brazilian Airlines
+TAM Mercosur
+TAME
+TAP Portugal
+TRIP Linhas A
+TUIfly
+TUR Avrupa Hava YollarÄ±
+Tajik Air
+Tarom
+Thai AirAsia
+Thai Airways International
+Thomas Cook Airlines
+Thomsonfly
+Tiara Air
+Tiger Airways
+Tiger Airways Australia
+TransAsia Airways
+TransHolding System
+Transaero Airlines
+Transavia France
+Transavia Holland
+Travel Service
+Tropic Air
+Tuninter
+Tunisair
+Turkish Airlines
+Turkmenistan Airlines
+Tway Airlines
+Twin Jet
+US Airways
+UTair-Express
+Ukraine International Airlines
+Uni Air
+United Airlines
+United Airways
+Ural Airlines
+Uzbekistan Airways
+VRG Linhas Aereas
+Valuair
+Varig Log
+Vietnam Airlines
+Viking Hellas
+Virgin America
+Virgin Atlantic Airways
+Virgin Australia
+Virgin Express
+Virgin Pacific
+VivaColombia
+Volaris
+WebJet Linhas A
+West Air China
+WestJet
+Widerøe
+Windward Islands Airways
+Wizz Air
+Wizz Air Ukraine
+XL Airways France
+Xiamen Airlines
+Yangon Airways
+Yemenia
+Yeti Airways
+ZABAIKAL AIRLINES
+Zambia Skyways
+Zest Air
+Zip
+Zoom Airlines
+bmibaby
+easyJet
+
+Saving file from pig terminal to localfile or hdfs:
+grunt> store a7 into '/home/edureka/Desktop/b' using PigStorage(',');
+
+For problem: C. List of Airlines operating with code share
+grunt> a1 = filter route by codeShare == 'Y';
+grunt> a2 = foreach a1 generate flatten(id) as routeId;
+grunt> a3 = join airline by id, a2 by routeId;
+grunt> a4 = foreach a3 generate flatten($1);
+grunt> a5 = distinct a4;
+grunt> a6 = order a5 by $0;
+
+For problem: D. Which country (or) territory having highest Airports
+grunt> a1 = group airport by country;
+grunt> a2 = foreach a1 generate group,COUNT(airport.name);
+grunt> a3 = order a2 by $1 desc;
+grunt> a4 = limit a3 1;
+dump a4;
+(United States,1697)
+
+For problme: E. Find the list of Active Airlines in United state
+grunt> a1 = filter airline by country == 'United States' and active == 'Y';
+grunt> a2 = foreach a1 generate name;
+grunt> a3 = order a2 by $0;
+
+
+
+

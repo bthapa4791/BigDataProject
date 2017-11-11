@@ -1,0 +1,1018 @@
+hive> create database if not exists airline;
+hive> use airline;
+
+hive> create table airportTable(id int,name string,city string,country string,IATAFAA string,ICAO string,latitude int,longtitude int,altitude int,timezone int,DST string,tz string) row format delimited fields terminated by ',';
+
+hive> create table airlineTable(id int,name string,alias string,iata string,icao string,callsign string,country string,active string) row format delimited fields terminated by ',';
+
+hive> load data local inpath '/home/edureka/Desktop/workspacedata/airline/airline.txt' into table airlineTable;
+
+ create table routeTable(iataicao string,airlineId int,source string,sourceId int,destination string,destinationId int,codeshare string,stops int,equipment string) row format delimited fields terminated by ',';
+
+ hive> load data local inpath '/home/edureka/Desktop/workspacedata/airline/route.txt' into table routeTable;
+
+ For Problem: A. Find list of Airports operating in the Country India
+
+ select name as AirportName from airportTable where country = "India" order by AirportName;
+
+Agartala
+Agatti
+Agra
+Agra Cantonment Railway Station
+Ahmedabad
+Aizawl
+Akola
+Allahabad
+Along
+Amritsar
+Aurangabad
+Bagdogra
+Bakshi Ka Talab
+Bangalore
+Bareilly
+Belgaum
+Bellary
+Bhatinda
+Bhavnagar
+Bhiwani
+Bhopal
+Bhubaneshwar
+Bhuj
+Bidar
+Bilaspur
+Birsa Munda
+Bokaro
+Calicut
+Carnicobar
+Chandigarh
+Chennai Intl
+Chhatrapati Shivaji Intl
+Cochin
+Cochin Port
+Coimbatore
+Cooch Behar
+Cuddapah
+Daman
+Deesa
+Dehradun
+Devi Ahilyabai Holkar
+Dhanbad
+Dibrugarh
+Dibrugarh Airport
+Dimapur Airport
+Diu Airport
+Dr Ambedkar Intl
+Dundigul
+Fursatganj
+Gangtok Helipad
+Gaya
+Goa
+Gorakhpur Airport
+Guna
+Gwalior
+Havelock Island Seaport
+Helipad of Viraj Group
+Hirakud
+Hissar
+Hubli Airport
+Hyderabad
+Imphal
+Indira Gandhi Intl
+Jabalpur
+Jaipur
+Jaisalmer
+Jammu
+Jamnagar
+Jamshedpur
+Jhansi
+Jharsuguda
+Jodhpur
+Jorhat
+Kailashahar
+Kandla
+Kangra Airport
+Kanpur
+Kanpur Chakeri
+Keshod
+Khajuraho
+Kolhapur
+Kota
+Kullu Manali
+Latur Airport
+Leh
+Lilabari
+Lokpriya Gopinath Bordoloi International Airport
+Lucknow
+Ludhiana
+Madurai
+Mangalore
+Mormugao-Goa Port
+Muzaffarpur
+Mysore Airport
+Nagarjuna Sagar
+Nagaur Airport
+Nal
+Nanded Airport
+Nasik Road
+Nawapara
+Netaji Subhash Chandra Bose Intl
+New Delhi Train Station
+Panagarh
+Pantnagar
+Pathankot
+Patiala
+Patna
+Pondicherry
+Porbandar
+Port Blair
+Pune
+Purnea
+Raipur
+Rajahmundry
+Rajkot
+Rourkela
+Safdarjung
+Salem
+Sarsawa
+Satna
+Shillong Airport
+Shimla Airport
+Sholapur
+Silchar
+Srinagar
+Surat
+Tambaram
+Tanjore
+Tezpur Airport
+Thiruvananthapuram Intl
+Tirupati
+Trichy
+Udaipur
+Utkela
+Vadodara
+Varanasi
+Vijayawada
+Vishakhapatnam
+Yelahanka AFB
+
+For problem: B. Find the list of Airlines having zero stops
+
+hive> select distinct a.id, a.name from airlineTable a join routeTable r on (r.airlineid = a.id) where r.stops = 0 order by a.id;
+
+10	40-Mile Air
+21	Aigle Azur
+24	American Airlines
+28	Asiana Airlines
+29	Askari Aviation
+32	Afriqiyah Airways
+35	Allegiant Air
+42	ABSA - Aerolinhas Brasileiras
+43	Abaet
+55	Astral Aviation
+68	Air Tindi
+83	Adria Airways
+90	Air Europa
+96	Aegean Airlines
+106	Air Europe
+109	Alaska Central Express
+116	Air Italy
+125	Ariana Afghan Airlines
+130	Aeroflot Russian Airlines
+132	Air Bosna
+137	Air France
+139	Air Caledonie International
+146	Air Salone
+151	Air Senegal International
+153	Air Namibia
+179	Aeroper
+197	Azerbaijan Airlines
+214	Air Berlin
+218	Air India Limited
+220	Air Bourbon
+221	Air Atlanta Icelandic
+225	Air Tahiti Nui
+231	Arkia Israel Airlines
+240	Air One
+241	Air Sahara
+242	Air Malta
+246	Amerijet International
+312	Air Sicilia
+316	Air Macau
+319	Air Seychelles
+321	AeroMéxico
+324	All Nippon Airways
+328	Air Niugini
+329	Air Arabia
+330	Air Canada
+333	Air Baltic
+336	Air Nippon
+338	Airnorth
+341	Air North Charter - Canada
+345	Air New Zealand
+386	Aero Flight
+397	Arrow Air
+407	Arik Air
+410	Aerocondor
+412	Aerolineas Argentinas
+426	Air Armenia
+439	Alaska Airlines
+442	Air Sinai
+462	Astrakhan Airlines
+470	Air Burkina
+476	Airlines Of Tasmania
+477	Air Saint Pierre
+491	Austrian Airlines
+502	Abu Dhabi Amiri Flight
+503	Aeroflot-Nord
+508	Aurigny Air Services
+515	Avianca - Aerovias Nacionales de Colombia
+524	Air Vanuatu
+543	Air Bangladesh
+563	Aeroline GmbH
+567	Air Caraïbes
+569	Air India Express
+576	AirAsia
+595	Atlant-Soyuz Airlines
+596	Alitalia
+603	Amaszonas
+608	Air Zimbabwe
+622	Aserca Airlines
+641	Rossiya-Russian Airlines
+683	Air Botswana
+690	Air Foyle
+692	Air Tahiti
+751	Air China
+753	Aero Condor Peru
+794	Air Algerie
+807	Air Dolomiti
+837	Aer Lingus
+839	Alpi Eagles
+879	Air Pacific
+881	Atlantic Airways
+882	Air Florida
+896	Air Iceland
+897	Air Philippines
+921	Air Greenland
+970	Air Bagan
+995	Atlasjet
+998	Air Koryo
+1006	Air Astana
+1008	Albanian Airlines
+1034	Aerolane
+1048	Atlantis European Airways
+1057	Air Mauritius
+1066	Air Madagascar
+1073	Air Moldova
+1109	Astair
+1173	Airbus France
+1191	Air Austral
+1203	Airlinair
+1206	Aero Lanka
+1230	Aero-Service
+1266	Avient Aviation
+1287	Aircompany Yakutia
+1290	Aeromar
+1299	Arkefly
+1308	Airlines PNG
+1316	AirTran Airways
+1317	Air Transat
+1338	Aerolineas Galapagos (Aerogal)
+1340	Alrosa Mirny Air Enterprise
+1355	British Airways
+1359	Biman Bangladesh Airlines
+1392	Benin Golf Air
+1401	Belair Airlines
+1403	Bahamasair
+1422	Bangkok Airways
+1434	Bearskin Lake Air Service
+1441	bmibaby
+1463	Blue Panorama Airlines
+1469	BRA-Transportes Aereos
+1472	Bering Air
+1478	Belavia Belarusian Airlines
+1492	Big Sky Airlines
+1500	Metro Batavia
+1508	Berjaya Air
+1531	Brussels Airlines
+1539	Binter Canarias
+1548	Bulgaria Air
+1581	CAL Cargo Air Lines
+1611	Cameroon Airlines
+1623	Canadian North
+1629	Cape Air
+1654	Cargoitalia
+1663	Caribbean Airlines
+1669	Carpatair
+1680	Cathay Pacific
+1682	Cayman Airways
+1683	Cebu Pacific
+1729	Changan Airlines
+1750	Chicago Express
+1756	China Airlines
+1758	China Eastern Airlines
+1767	China Southern Airlines
+1769	China United Airlines
+1775	Chitaavia
+1780	Cielos Airlines
+1790	City Connexion Airlines
+1792	CityJet
+1829	Comair
+1844	Comores Airlines
+1868	Condor Flugdienst
+1886	Conviasa
+1889	Copa Airlines
+1908	Corsairfly
+1909	Corse-Mediterranee
+1910	Cosmic Air
+1925	Croatia Airlines
+1936	Cubana de Aviación
+1942	Cyprus Airways
+1943	Cyprus Turkish Airlines
+1946	Czech Airlines
+1954	DAT Danish Air Transport
+1966	Daallo Airlines
+2009	Delta Air Lines
+2056	Dragonair
+2058	Druk Air
+2091	EVA Air
+2094	Eagle Air
+2104	East African
+2117	Eastern Airways
+2143	Egyptair
+2150	El Al Israel Airlines
+2183	Emirates
+2193	Empresa Ecuatoriana De Aviacion
+2217	Estafeta Carga Aerea
+2218	Estonian Air
+2220	Ethiopian Airlines
+2222	Etihad Airways
+2226	Euro Exec Express
+2245	Eurolot
+2260	Eurowings
+2264	Excel Airways
+2293	Express One International
+2297	easyJet
+2324	Far Eastern Air Transport
+2350	Finnair
+2353	Firefly
+2354	First Air
+2395	Flightline
+2409	Fly Air
+2417	AirAsia X
+2418	FlyLal
+2419	FlyNordic
+2420	Flybaboo
+2421	Flybe
+2439	Formosa Airlines
+2468	Frontier Airlines
+2520	Garuda Indonesia
+2524	Gazpromavia
+2538	Georgian Airways
+2541	Georgian National Airlines
+2547	Germania
+2548	Germanwings
+2575	Go Air
+2585	Golden Air
+2607	Great Lakes Airlines
+2622	Grupo TACA
+2638	Gulf Air Bahrain
+2660	Hainan Airlines
+2681	TUIfly
+2682	Hapagfly
+2684	Harmony Airways
+2688	Hawaiian Airlines
+2692	Hawkair
+2731	Helijet
+2748	Hello
+2750	Helvetic Airways
+2757	Hex'Air
+2765	Hokkaido International Airlines
+2773	Hong Kong Airlines
+2774	Hong Kong Express Airways
+2822	Iberia Airlines
+2825	Iberworld
+2826	Ibex Airlines
+2835	Icelandair
+2850	IndiGo Airlines
+2857	Indonesia AirAsia
+2881	Interair South Africa
+2896	Interlink Airlines
+2916	Intersky
+2917	Interstate Airline
+2922	Iran Air
+2923	Iran Aseman Airlines
+2942	Cargo Plus Aviation
+2951	Isles of Scilly Skybus
+2954	Israir
+2987	Japan Airlines
+2989	Japan Asia Airways
+2990	Japan Transocean Air
+2991	Jat Airways
+2993	Jazeera Airways
+2994	Jeju Air
+3000	Jet Airways
+3021	Jetstar Asia Airways
+3026	Jet2.com
+3029	JetBlue Airways
+3052	Jetstar Airways
+3081	Juneyao Airlines
+3090	KLM Royal Dutch Airlines
+3097	Kam Air
+3098	Kampuchea Airlines
+3123	Kenmore Air
+3126	Kenya Airways
+3148	Kish Air
+3163	Korean Air
+3179	Kuwait Airways
+3197	LACSA
+3200	LAN Airlines
+3201	LAN Argentina
+3210	LOT Polish Airlines
+3213	LTU International
+3233	Lao Airlines
+3251	Leeward Islands Air Transport
+3258	Libyan Arab Airlines
+3287	Linhas A
+3290	Lion Mentari Airlines
+3320	Lufthansa
+3329	Luxair
+3342	L
+3354	MIAT Mongolian Airlines
+3370	Mahan Air
+3378	Malaysia Airlines
+3386	Malmö Aviation
+3391	Mandala Airlines
+3392	Mandarin Airlines
+3393	Mango
+3432	Maxair
+3437	Maya Island Air
+3463	Meridiana
+3490	Middle East Airlines
+3498	Midwest Airlines (Egypt)
+3534	Myway Airlines
+3539	Montenegro Airlines
+3545	Moskovia Airlines
+3547	Motor Sich
+3574	NHT Lineas Aereas
+3589	Nasair
+3613	Nationwide Airlines
+3618	Nauru Air Corporation
+3637	Nepal Airlines
+3652	NextJet
+3661	Niki
+3674	Nok Air
+3721	Northern Dene Airways
+3734	Northwestern Air
+3737	Norwegian Air Shuttle
+3740	Nouvel Air Tunisie
+3754	Nas Air
+3764	Oceanair
+3776	Olympic Airlines
+3778	Oman Air
+3781	Omni Air International
+3783	Omskavia Airline
+3788	Onur Air
+3805	Orenburg Airlines
+3811	Orient Thai Airlines
+3826	Overland Airways
+3834	PAN Air
+3835	PB Air
+3850	Jetstar Pacific
+3856	Pacific Coastal Airline
+3857	Pacific East Asia Cargo Airlines
+3865	Pacific Wings
+3871	Pakistan International Airlines
+3926	Pegasus Airlines
+3935	Peninsula Airways
+3952	Philippine Airlines
+3969	Piedmont Airlines (1948-1989)
+3976	Pinnacle Airlines
+4021	Porter Airlines
+4026	Potomac Air
+4031	Precision Air
+4044	Primaris Airlines
+4066	Proflight Commuter Services
+4089	Qantas
+4091	Qatar Airways
+4165	Reem Air
+4178	Regional Express
+4234	Air Rarotonga
+4248	Royal Air Maroc
+4255	Royal Brunei Airlines
+4259	Royal Jordanian
+4292	Rwandair Express
+4296	Ryanair
+4304	SATA International
+4305	South African Airways
+4311	Shaheen Air International
+4319	Scandinavian Airlines System
+4329	S7 Airlines
+4335	Seaborne Airlines
+4349	SriLankan Airlines
+4356	Sun Country Airlines
+4375	Spicejet
+4388	Star Flyer
+4429	SATA Air Acores
+4435	Singapore Airlines
+4436	Sibaviatrans
+4438	Skynet Airlines
+4454	Sriwijaya Air
+4475	South East Asian Airlines
+4496	Skyservice Airlines
+4513	Servicios de Transportes A
+4521	Sudan Airways
+4533	Saudi Arabian Airlines
+4547	Southwest Airlines
+4550	Southern Winds Airlines
+4559	Swiss International Air Lines
+4573	SunExpress
+4599	Shandong Airlines
+4608	Sichuan Airlines
+4609	Shanghai Airlines
+4611	Shenzhen Airlines
+4687	Spirit Airlines
+4691	SATENA
+4735	Santa Barbara Airlines
+4737	Sky Airline
+4740	Skymark Airlines
+4750	SilkAir
+4752	Surinam Airways
+4797	Solomon Airlines
+4805	Saratov Aviation Division
+4808	Sat Airlines
+4822	Shuttle America
+4840	Scat Air
+4863	TAME
+4867	TAM Brazilian Airlines
+4869	TAP Portugal
+4870	Tunisair
+4897	Thomas Cook Airlines
+4936	Tiger Airways
+4937	Tiger Airways Australia
+4940	Thai Airways International
+4947	Thai AirAsia
+4951	Turkish Airlines
+4965	Twin Jet
+5002	Tiara Air
+5013	Thomsonfly
+5016	Tropic Air
+5038	TransAsia Airways
+5039	Transavia Holland
+5041	TACV
+5067	Transaero Airlines
+5083	Turkmenistan Airlines
+5085	Tuninter
+5097	Travel Service
+5133	TAAG Angola Airlines
+5156	TAM Mercosur
+5179	Tarom
+5188	TRIP Linhas A
+5209	United Airlines
+5234	Ural Airlines
+5265	US Airways
+5281	Uzbekistan Airways
+5282	Ukraine International Airlines
+5297	Valuair
+5309	Vietnam Airlines
+5325	Volaris
+5331	Virgin America
+5333	Virgin Express
+5347	Virgin Atlantic Airways
+5354	Varig Log
+5360	Virgin Australia
+5368	VRG Linhas Aereas
+5399	WebJet Linhas A
+5416	WestJet
+5439	Widerøe
+5461	Wizz Air
+5479	XL Airways France
+5484	Xiamen Airlines
+5496	Yemenia
+5521	Zip
+5523	Zoom Airlines
+5651	Royal Air Cambodge
+5813	Air Mandalay
+5982	Air Busan
+6557	Japan Air System
+8359	Star Peru (2I)
+8463	United Airways
+8576	Fly540
+8745	Transavia France
+8809	Island Air (WP)
+9082	Uni Air
+9531	Tajik Air
+9541	Air Mozambique
+9620	Gabon Airlines
+9666	Virgin Pacific
+9764	Zest Air
+9784	Yangon Airways
+9809	Eastar Jet
+9810	Jin Air
+9818	Air Arabia Maroc
+9828	Ciel Canadien
+9829	Canadian National Airways
+10121	Illinois Airways
+10122	Salzburg arrows
+10128	Dennis Sky
+10646	Birmingham European
+10650	Pal airlines
+10675	Sharp Airlines
+10737	ALAK
+10739	Air Choice One
+10741	China United
+10758	Safi Airlines
+10765	SeaPort Airlines
+10776	Salmon Air
+10800	Star1 Airlines
+10912	Alaska Seaplane Service
+10955	MexicanaLink
+11741	Air Antilles Express
+11763	Peruvian Airlines
+11794	Catovair
+11806	Compagnie Africaine d\\'Aviation
+11808	Zambia Skyways
+11811	AlMasria Universal Airlines
+11814	SmartLynx Airlines
+11838	Arik Niger
+11857	Royal Falcon
+11948	Viking Hellas
+11963	Starline.kz
+12978	West Air China
+13088	NordStar Airlines
+13108	Maldivian
+13200	Fuji Dream Airlines
+13335	Homer Air
+13704	KSY
+13757	Wizz Air Ukraine
+13899	Cambodia Angkor Air (K6)
+13983	Azul
+14061	LSM Airlines
+14118	Genesis
+14485	Fly Dubai
+14849	Aereonautica militare
+15814	UTair-Express
+15837	Huaxia
+15893	Marysya Airlines
+15999	China SSS
+16120	ZABAIKAL AIRLINES
+16133	Yeti Airways
+16136	Caucasus Airlines
+16149	Windward Islands Airways
+16150	TransHolding System
+16262	Fly Colombia ( Interliging Flights )
+16415	Camair-co
+16475	TUR Avrupa Hava YollarÄ±
+16508	Baikotovitchestrian Airlines 
+16615	Mongolian International Air Lines 
+16624	Tway Airlines
+16625	Papillon Grand Canyon Helicopters
+16660	AeroWorld 
+16707	Hankook Airline
+16725	Marusya Airways
+16726	Era Alaska
+16844	BVI Airways
+16882	Polet Airlines (Priv)
+16942	Mauritania Airlines International
+16960	Asian Wings Airways
+16963	Air Arabia Egypt
+17023	Asia Wings
+17083	Nile Air
+17094	Senegal Airlines
+17095	Fly 6ix
+17099	Starbow Airlines
+17408	BusinessAir
+17519	SENIC AIRLINES
+17675	Peach Aviation
+17885	Interjet (ABC Aerolineas)
+17891	Scoot
+18169	Patriot Airways
+18232	BQB Lineas Aereas
+18529	T.J. Air
+18543	SkyWork Airlines 
+18553	Maastricht Airlines
+18700	SOCHI AIR CHATER
+18732	Malindo Air
+18825	Flightlink Tanzania
+18828	IzAvia
+18944	Insel Air (7I/INC) (Priv)
+18946	VivaColombia
+19016	Apache Air
+19305	Citilink Indonesia
+19676	Rainbow Air Polynesia
+
+For problem: C. List of Airlines operating with code share
+select distinct a.name from airlineTable a join routeTable r on (r.airlineid = a.id) where r.codeshare = "Y" order by a.name;
+
+Abu Dhabi Amiri Flight
+Aegean Airlines
+Aer Lingus
+AeroMéxico
+Aeroflot Russian Airlines
+Aeroflot-Nord
+Aerolane
+Aerolineas Argentinas
+Air Astana
+Air Baltic
+Air Berlin
+Air Canada
+Air Caraïbes
+Air China
+Air Europa
+Air France
+Air India Limited
+Air Italy
+Air Macau
+Air Madagascar
+Air Malta
+Air Mauritius
+Air New Zealand
+Air One
+Air Pacific
+Air Philippines
+Air Rarotonga
+Air Sahara
+Air Seychelles
+Air Tahiti Nui
+Air Transat
+Air Vanuatu
+AirTran Airways
+Alaska Airlines
+Alitalia
+All Nippon Airways
+American Airlines
+Arik Air
+Asiana Airlines
+Atlantis European Airways
+Austrian Airlines
+Avianca - Aerovias Nacionales de Colombia
+Azerbaijan Airlines
+Azul
+Bangkok Airways
+Belavia Belarusian Airlines
+Binter Canarias
+British Airways
+Brussels Airlines
+Canadian North
+Cape Air
+Cathay Pacific
+China Airlines
+China Eastern Airlines
+China Southern Airlines
+Condor Flugdienst
+Copa Airlines
+Corsairfly
+Croatia Airlines
+Cubana de Aviación
+Cyprus Airways
+Czech Airlines
+Delta Air Lines
+Dragonair
+EVA Air
+Eastern Airways
+Egyptair
+Emirates
+Era Alaska
+Ethiopian Airlines
+Etihad Airways
+Finnair
+First Air
+Flybaboo
+Flybe
+Frontier Airlines
+Garuda Indonesia
+Golden Air
+Grupo TACA
+Gulf Air Bahrain
+Hainan Airlines
+Hawaiian Airlines
+Iberia Airlines
+Japan Airlines
+Jet Airways
+KLM Royal Dutch Airlines
+Kenmore Air
+Kenya Airways
+Korean Air
+L
+LACSA
+LAN Airlines
+LAN Argentina
+LOT Polish Airlines
+Lao Airlines
+Lion Mentari Airlines
+Lufthansa
+Luxair
+Maastricht Airlines
+Malaysia Airlines
+Malmö Aviation
+Mandarin Airlines
+Meridiana
+Middle East Airlines
+Nas Air
+Norwegian Air Shuttle
+Olympic Airlines
+Oman Air
+Pacific Wings
+Philippine Airlines
+Qantas
+Qatar Airways
+Royal Air Maroc
+Royal Jordanian
+Rwandair Express
+S7 Airlines
+SATA International
+Saudi Arabian Airlines
+Scandinavian Airlines System
+Shandong Airlines
+Shanghai Airlines
+Shenzhen Airlines
+Singapore Airlines
+South African Airways
+Southwest Airlines
+SriLankan Airlines
+Swiss International Air Lines
+TAM Brazilian Airlines
+TAP Portugal
+Tarom
+Thai Airways International
+TransAsia Airways
+TransHolding System
+Transaero Airlines
+Turkish Airlines
+US Airways
+Ukraine International Airlines
+Uni Air
+United Airlines
+Uzbekistan Airways
+Vietnam Airlines
+Virgin Atlantic Airways
+Virgin Australia
+WestJet
+Yemenia
+ZABAIKAL AIRLINES
+
+For problem: D. Which country (or) territory having highest Airports
+select countryName, max(tot) 
+from (select country as countryName,count(name) as tot 
+from airportTable 
+group by country
+)a
+
+select countryName,max(tot) as total
+from (select country as countryName,count(name) as tot
+from airportTable
+group by country
+)a group by countryName order by total desc limit 1;
+
+select country as countryName, count(name) as total
+from airportTable
+group by country
+order by total desc
+limit 1;
+
+1697
+
+For problem: E. Find the list of Active Airlines in United state
+
+hive> select name,country from airlinetable where country = "United States" and active = "Y";
+
+40-Mile Air	United States
+Aloha Airlines	United States
+American Airlines	United States
+Allegiant Air	United States
+Alaska Central Express	United States
+Air Cargo Carriers	United States
+Airlift International	United States
+America West Airlines	United States
+Air Wisconsin	United States
+Allegheny Commuter Airlines	United States
+Air Sunshine	United States
+ATA Airlines	United States
+Arrow Air	United States
+Atlantic Southeast Airlines	United States
+American Eagle Airlines	United States
+Access Air	United States
+Air Florida	United States
+Atlas Air	United States
+AirTran Airways	United States
+Bemidji Airlines	United States
+Bering Air	United States
+Cape Air	United States
+Chautauqua Airlines	United States
+Coastal Air	United States
+Colgan Air	United States
+Comair	United States
+CommutAir	United States
+Compass Airlines	United States
+Continental Airlines	United States
+Continental Express	United States
+Continental Micronesia	United States
+Crown Airways	United States
+Delta Air Lines	United States
+Evergreen International Airlines	United States
+Express One International	United States
+ExpressJet	United States
+Florida West International Airways	United States
+Freedom Air	United States
+Freedom Airlines	United States
+Frontier Airlines	United States
+Frontier Flying Service	United States
+GoJet Airlines	United States
+Great Lakes Airlines	United States
+Gulfstream International Airlines	United States
+Hageland Aviation Services	United States
+Hawaiian Airlines	United States
+Horizon Air	United States
+Indigo	United States
+Island Airlines	United States
+Jet Airways	United States
+JetBlue Airways	United States
+Kenmore Air	United States
+Mesa Airlines	United States
+Mesaba Airlines	United States
+Midway Airlines	United States
+Midwest Airlines	United States
+NetJets	United States
+New England Airlines	United States
+Northwest Airlines	United States
+Omni Air International	United States
+Pacific Island Aviation	United States
+Pacific Wings	United States
+Peninsula Airways	United States
+Piedmont Airlines (1948-1989)	United States
+Pinnacle Airlines	United States
+Potomac Air	United States
+Republic Airlines	United States
+Ryan Air Services	United States
+Ryan International Airlines	United States
+Seaborne Airlines	United States
+Scenic Airlines	United States
+Sun Country Airlines	United States
+Southeast Air	United States
+Skagway Air Service	United States
+Southwest Airlines	United States
+Skywalk Airlines	United States
+Spirit Airlines	United States
+SkyWest	United States
+Southern Airways	United States
+South Pacific Island Airways	United States
+Shuttle America	United States
+Trans States Airlines	United States
+USA3000 Airlines	United States
+United Airlines	United States
+US Airways	United States
+US Helicopter	United States
+United States Air Force	United States
+US Helicopter Corporation	United States
+Virgin America	United States
+Western Airlines	United States
+World Airways	United States
+Carnival Air Lines	United States
+Island Air (WP)	United States
+Epic Holiday	United States
+Texas Wings	United States
+Atifly	United States
+Air Choice One	United States
+Locair	United States
+SeaPort Airlines	United States
+Salmon Air	United States
+Alaska Seaplane Service	United States
+Gryphon Airlines	United States
+U.S. Air	United States
+PanAm World Airways	United States
+CBM America	United States
+Black Stallion Airways	United States
+Yellowstone Club Private Shuttle	United States
+Trans Pas Air	United States
+Papillon Grand Canyon Helicopters	United States
+Usa Sky Cargo	United States
+Era Alaska	United States
+Hankook Air US	United States
+Orbit Airlines	United States
+SENIC AIRLINES	United States
+XOJET	United States
+Orbit International Airlines	United States
+Orbit Regional Airlines	United States
+Orbit Atlantic Airways	United States
+Aws express	United States
+Southjet	United States
+Southjet connect	United States
+Southjet cargo	United States
+Patriot Airways	United States
+Vision Airlines (V2)	United States
+Yellowtail	United States
+Royal Airways	United States
+Executive AirShare	United States
+T.J. Air	United States
+Maryland Air	United States
+Apache Air	United States
+National Air Cargo	United States
+Eastern Atlantic Virtual Airlines	United States
+Comfort Express Virtual Charters Albany	United States
+Comfort Express Virtual Charters	United States
+XAIR USA	United States
+Envoy Air	United States
+Rainbow Air (RAI)	United States
+Rainbow Air Polynesia	United States
+Rainbow Air US	United States
+Spike Airlines	United States
+All America	United States
